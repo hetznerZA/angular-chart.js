@@ -162,8 +162,17 @@
             var data = Array.isArray(scope.data[0]) ?
               getDataSets(scope.labels, scope.data, scope.series || [], scope.colours) :
               getData(scope.labels, scope.data, scope.colours);
-            var options = angular.extend({}, ChartJs.getOptions(type), scope.options);
-            chart = new ChartJs.Chart(ctx)[type](data, options);
+            //var options = angular.extend({}, ChartJs.getOptions(type), scope.options);
+            //chart = new ChartJs.Chart(ctx)[type](data, options);
+            chart = new ChartJs.Chart(ctx).Scatter(data.datasets,
+                {
+                  bezierCurve: true,
+                  showTooltips: true,
+                  scaleShowHorizontalLines: true,
+                  scaleShowLabels: true,
+                  scaleType: 'date'
+                });
+
             scope.$emit('create', chart);
 
             ['hover', 'click'].forEach(function (action) {
@@ -292,7 +301,9 @@
       if (Array.isArray(scope.data[0])) {
         chart.datasets.forEach(function (dataset, i) {
           (dataset.points || dataset.bars).forEach(function (dataItem, j) {
-            dataItem.value = values[i][j];
+            //dataItem.value = values[i][j];
+            //dataItem.arg = values[i][j].x;
+            dataItem.value = values[i][j].y;
           });
         });
       } else {
